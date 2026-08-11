@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Production Schedule · WBMDTCL Gourandih A&amp;C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================
+     TOKENS
+     ========================================================== */
+  :root[data-theme="light"] {
+    --bg-1: #fbf8f2;
+    --bg-2: #f6f1e4;
+    --bg-3: #f2ecdd;
+    --surface: #ffffff;
+    --surface-2: #fdfbf6;
+    --ink: #201b14;
+    --ink-soft: #6b6255;
+    --ink-faint: #a49a89;
+    --line: #e6ddc9;
+    --amber: #c9762f;
+    --amber-2: #e8a33d;
+    --teal: #0f7f82;
+    --teal-2: #2bb6ae;
+    --red: #c8492f;
+    --red-bg: #fbe9e3;
+    --green: #1f7a4d;
+    --green-bg: #e6f4ec;
+    --yellow-bg: #fdf3d8;
+    --yellow-ink: #8a6a10;
+    --shadow: rgba(45, 32, 12, 0.10);
+    --shadow-lg: rgba(45, 32, 12, 0.16);
+    --overlay: rgba(251, 248, 242, 0.72);
+  }
+  :root[data-theme="dark"] {
+    --bg-1: #12151a;
+    --bg-2: #171c23;
+    --bg-3: #0e1116;
+    --surface: #1b212a;
+    --surface-2: #212834;
+    --ink: #efece4;
+    --ink-soft: #a9a396;
+    --ink-faint: #6d6858;
+    --line: #2a323d;
+    --amber: #ef9f45;
+    --amber-2: #ffc267;
+    --teal: #35d0c8;
+    --teal-2: #6fe6df;
+    --red: #ff7a68;
+    --red-bg: #3a2019;
+    --green: #4fd897;
+    --green-bg: #163427;
+    --yellow-bg: #3a3115;
+    --yellow-ink: #f0cf6a;
+    --shadow: rgba(0, 0, 0, 0.35);
+    --shadow-lg: rgba(0, 0, 0, 0.55);
+    --overlay: rgba(18, 21, 26, 0.72);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--amber) 14%, transparent), transparent 40%),
+      radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--teal) 12%, transparent), transparent 45%),
+      linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    transition: background-color .4s ease, color .4s ease;
+  }
+
+  ::selection { background: var(--amber-2); color: #201b14; }
+
+  /* ==========================================================
+     TOPBAR
+     ========================================================== */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    padding: 16px clamp(16px, 4vw, 40px);
+    background: var(--overlay);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 40px; height: 40px; border-radius: 11px;
+    background: linear-gradient(135deg, var(--amber), var(--teal));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 16px var(--shadow);
+    flex-shrink: 0;
+  }
+  .brand-mark svg { width: 22px; height: 22px; display: block; }
+  .brand-text h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px; font-weight: 700; margin: 0; line-height: 1.15;
+    letter-spacing: .01em;
+  }
+  .brand-text p {
+    margin: 2px 0 0; font-size: 12px; color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace; letter-spacing: .01em;
+  }
+  .topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+  .sync-pill {
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    color: var(--ink-soft);
+    padding: 6px 12px 6px 10px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--surface);
+  }
+  .sync-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 60%, transparent);
+    animation: pulse-dot 2.4s ease-in-out infinite;
+  }
+  .sync-dot.syncing { background: var(--amber-2); animation-duration: .7s; }
+  .sync-dot.offline { background: var(--red); animation: none; }
+  @keyframes pulse-dot {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 55%, transparent); }
+    70%  { box-shadow: 0 0 0 7px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  .icon-btn {
+    width: 38px; height: 38px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--surface);
+    color: var(--ink); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .icon-btn:hover { box-shadow: 0 6px 14px var(--shadow); transform: translateY(-1px); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  .icon-btn .moon { display: none; }
+  [data-theme="dark"] .icon-btn .sun { display: none; }
+  [data-theme="dark"] .icon-btn .moon { display: block; }
+
+  /* ==========================================================
+     LAYOUT / SPINE
+     ========================================================== */
+  main.stage-wrap {
+    max-width: 980px; margin: 0 auto;
+    padding: clamp(24px, 5vw, 56px) clamp(16px, 4vw, 40px) 80px;
+    display: flex; gap: clamp(14px, 3vw, 28px);
+  }
+  .spine {
+    flex-shrink: 0; width: 26px;
+    display: flex; flex-direction: column; align-items: center;
+    padding-top: 34px;
+  }
+  .spine-track {
+    position: relative; width: 3px; flex: 1;
+    background: var(--line); border-radius: 3px; overflow: hidden;
+  }
+  .spine-fill {
+    position: absolute; top: 0; left: 0; width: 100%; height: 0%;
+    background: linear-gradient(180deg, var(--amber), var(--teal));
+    border-radius: 3px;
+    transition: height .7s cubic-bezier(.65,0,.35,1);
+  }
+
+  .cards { flex: 1; display: flex; flex-direction: column; gap: clamp(16px, 3vw, 26px); min-width: 0; }
+
+  .stage-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: clamp(18px, 3vw, 30px);
+    box-shadow: 0 10px 30px var(--shadow);
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1), border-color .3s;
+  }
+  .stage-card.in { opacity: 1; transform: translateY(0); }
+  .stage-card.locked { pointer-events: none; }
+  .stage-card.active-glow { border-color: color-mix(in srgb, var(--amber) 45%, var(--line)); }
+
+  .stage-marker {
+    position: absolute; left: -49px; top: 26px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--surface); border: 2px solid var(--line);
+    color: var(--ink-faint);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700;
+    transition: all .4s ease;
+  }
+  .stage-card.in .stage-marker {
+    border-color: var(--teal);
+    background: linear-gradient(135deg, var(--amber), var(--teal));
+    color: #fff;
+  }
+  @media (max-width: 720px) {
+    .spine { display: none; }
+    .stage-marker { display: none; }
+  }
+
+  .stage-body h2 {
+    font-family: 'Space Grotesk', sans-serif; margin: 0 0 4px;
+    font-size: clamp(18px, 2.6vw, 22px); font-weight: 700;
+  }
+  .stage-sub {
+    margin: 0 0 20px; color: var(--ink-soft); font-size: 13.5px;
+  }
+  .stage-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--teal); margin: 0 0 6px; font-weight: 600;
+  }
+
+  /* ==========================================================
+     FORM FIELDS
+     ========================================================== */
+  .field-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 14px; margin-bottom: 20px;
+  }
+  .field {
+    display: flex; flex-direction: column; gap: 7px;
+    background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 14px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .field:focus-within {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--amber) 18%, transparent);
+  }
+  .field label {
+    font-size: 11.5px; font-weight: 600; color: var(--ink-soft);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .field label .unit-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    color: var(--teal); font-weight: 600;
+  }
+  .field input {
+    border: none; background: transparent; outline: none;
+    font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 600;
+    color: var(--ink); width: 100%; padding: 0;
+  }
+  .field input::placeholder { color: var(--ink-faint); font-weight: 400; }
+
+  .btn {
+    appearance: none; border: none; cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 600;
+    padding: 12px 22px; border-radius: 11px;
+    display: inline-flex; align-items: center; gap: 9px;
+    transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+  }
+  .btn-primary {
+    color: #fff5e8;
+    background: linear-gradient(135deg, var(--amber), var(--teal));
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--amber) 35%, transparent);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 26px color-mix(in srgb, var(--amber) 45%, transparent); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn:disabled { opacity: .6; cursor: progress; transform: none; }
+
+  .btn .spinner {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ==========================================================
+     METRIC GRID (Stage 2 — derived)
+     ========================================================== */
+  .metric-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .metric-card {
+    border-radius: 14px; padding: 16px;
+    background: linear-gradient(160deg, var(--surface-2), var(--surface));
+    border: 1px solid var(--line);
+    position: relative; overflow: hidden;
+  }
+  .metric-card::after {
+    content: ''; position: absolute; inset: auto -20% -60% auto;
+    width: 90px; height: 90px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber), var(--teal));
+    opacity: .10;
+  }
+  .metric-card .m-label {
+    font-size: 11px; color: var(--ink-soft); font-weight: 600;
+    text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px;
+  }
+  .metric-card .m-value {
+    font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 600;
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .metric-card .m-unit { font-size: 12px; color: var(--teal); font-weight: 600; }
+  .metric-card.flash { animation: flash-bg 1s ease; }
+  @keyframes flash-bg {
+    0% { background: color-mix(in srgb, var(--amber-2) 35%, var(--surface)); }
+    100% { background: linear-gradient(160deg, var(--surface-2), var(--surface)); }
+  }
+
+  /* ==========================================================
+     TABLES
+     ========================================================== */
+  .data-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .data-table th {
+    text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em;
+    font-weight: 700; color: #fff5e8; padding: 12px 14px;
+    background: linear-gradient(120deg, var(--amber), var(--teal));
+  }
+  .data-table td {
+    padding: 11px 14px; font-size: 14px; border-top: 1px solid var(--line);
+    background: var(--surface-2);
+  }
+  .data-table tr:hover td { background: var(--surface); }
+  .data-table .cap-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink-soft);
+  }
+  .data-table input[type="number"] {
+    width: 84px; padding: 7px 9px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--surface);
+    font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600;
+    color: var(--ink); outline: none; transition: border-color .2s ease;
+  }
+  .data-table input[type="number"]:focus { border-color: var(--amber); }
+  .data-table .out-cell {
+    font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--teal);
+    transition: background .3s ease;
+  }
+  .data-table .out-cell.flash { background: color-mix(in srgb, var(--amber-2) 40%, transparent); }
+  .table-note {
+    font-size: 12px; color: var(--ink-faint); margin: -8px 0 18px; font-style: italic;
+  }
+
+  /* ==========================================================
+     RESULT BOXES
+     ========================================================== */
+  .result-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px;
+  }
+  .result-box {
+    border-radius: 16px; padding: 22px; position: relative; overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    transition: background .5s ease, border-color .5s ease;
+  }
+  .result-box .result-label {
+    display: block; font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .05em; margin-bottom: 10px; opacity: .85;
+  }
+  .result-box .result-value {
+    font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 700;
+    display: block; line-height: 1.1;
+  }
+  .result-box .result-unit {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; opacity: .75;
+  }
+  .result-box.positive {
+    background: linear-gradient(150deg, var(--green-bg), var(--surface-2));
+    border-color: color-mix(in srgb, var(--green) 45%, var(--line));
+    color: var(--green);
+  }
+  .result-box.negative {
+    background: linear-gradient(150deg, var(--red-bg), var(--surface-2));
+    border-color: color-mix(in srgb, var(--red) 45%, var(--line));
+    color: var(--red);
+  }
+  .result-box.neutral {
+    background: linear-gradient(150deg, var(--yellow-bg), var(--surface-2));
+    border-color: color-mix(in srgb, var(--yellow-ink) 40%, var(--line));
+    color: var(--yellow-ink);
+  }
+  .result-box.pulse { animation: result-pulse .6s ease; }
+  @keyframes result-pulse {
+    0% { transform: scale(1); } 40% { transform: scale(1.02); } 100% { transform: scale(1); }
+  }
+
+  /* ==========================================================
+     SKELETON / LOADING
+     ========================================================== */
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface-2) 25%, var(--line) 50%, var(--surface-2) 75%);
+    background-size: 200% 100%; animation: shimmer 1.4s ease infinite;
+    border-radius: 8px; color: transparent !important;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  .boot-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    background: var(--bg-1);
+    transition: opacity .5s ease, visibility .5s ease;
+  }
+  .boot-overlay.hide { opacity: 0; visibility: hidden; }
+  .boot-ring {
+    width: 46px; height: 46px; border-radius: 50%;
+    border: 3px solid var(--line); border-top-color: transparent;
+    background: conic-gradient(from 0deg, var(--amber), var(--teal), var(--amber));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+    animation: spin .9s linear infinite;
+  }
+  .boot-overlay p { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink-soft); }
+
+  /* ==========================================================
+     TOASTS
+     ========================================================== */
+  #toastHost {
+    position: fixed; right: 18px; bottom: 18px; z-index: 200;
+    display: flex; flex-direction: column; gap: 10px; align-items: flex-end;
+  }
+  .toast {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; border-radius: 12px;
+    background: var(--surface); border: 1px solid var(--line);
+    box-shadow: 0 12px 30px var(--shadow-lg);
+    font-size: 13.5px; font-weight: 500;
+    animation: toast-in .35s cubic-bezier(.2,.8,.3,1);
+    max-width: 320px;
+  }
+  .toast.out { animation: toast-out .3s ease forwards; }
+  @keyframes toast-in { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes toast-out { to { opacity: 0; transform: translateX(20px); } }
+  .toast-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .toast.success .toast-dot { background: var(--green); }
+  .toast.error .toast-dot { background: var(--red); }
+
+  footer.app-foot {
+    text-align: center; padding: 30px 20px 10px; color: var(--ink-faint);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="boot-overlay" id="bootOverlay">
+  <div class="boot-ring"></div>
+  <p>Connecting to production sheet…</p>
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="15" width="18" height="4" rx="1.4" fill="#fff" fill-opacity="0.95"/>
+        <rect x="3" y="9.5" width="18" height="4" rx="1.4" fill="#fff" fill-opacity="0.7"/>
+        <rect x="3" y="4" width="18" height="4" rx="1.4" fill="#fff" fill-opacity="0.45"/>
+      </svg>
+    </span>
+    <div class="brand-text">
+      <h1>Production Schedule</h1>
+      <p>WBMDTCL · GOURANDIH A&amp;C</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <div class="sync-pill"><span class="sync-dot" id="syncDot"></span><span id="syncLabel">Live</span></div>
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" stroke-linecap="round"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="stage-wrap">
+  <div class="spine" aria-hidden="true">
+    <div class="spine-track"><div class="spine-fill" id="spineFill"></div></div>
+  </div>
+
+  <div class="cards">
+
+    <!-- STAGE 1 — BASE PARAMETERS -->
+    <section class="stage-card" id="stage-1">
+      <div class="stage-marker">1</div>
+      <div class="stage-body">
+        <p class="stage-eyebrow">Input</p>
+        <h2>Base Parameters</h2>
+        <p class="stage-sub">The core assumptions behind the whole simulation.</p>
+        <div class="field-grid" id="baseFields"></div>
+        <button class="btn btn-primary" id="submitBase">
+          <span class="btn-label">Calculate &amp; Save</span>
+          <span class="spinner" hidden></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- STAGE 2 — DERIVED METRICS -->
+    <section class="stage-card locked" id="stage-2">
+      <div class="stage-marker">2</div>
+      <div class="stage-body">
+        <p class="stage-eyebrow">Auto-calculated</p>
+        <h2>Derived Metrics</h2>
+        <p class="stage-sub">Recomputed instantly from your base parameters.</p>
+        <div class="metric-grid" id="derivedFields"></div>
+      </div>
+    </section>
+
+    <!-- STAGE 3 — EQUIPMENT REQUIREMENT -->
+    <section class="stage-card locked" id="stage-3">
+      <div class="stage-marker">3</div>
+      <div class="stage-body">
+        <p class="stage-eyebrow">Fleet Planning</p>
+        <h2>Equipment Requirement</h2>
+        <p class="stage-sub">Set how many of each machine are deployed.</p>
+        <table class="data-table">
+          <thead><tr><th>Equipment</th><th>Capacity</th><th>Unit</th><th>Quantity</th></tr></thead>
+          <tbody id="equipmentBody"></tbody>
+        </table>
+        <button class="btn btn-primary" id="submitEquipment">
+          <span class="btn-label">Update Fleet &amp; Recalculate</span>
+          <span class="spinner" hidden></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- STAGE 4 — DAILY PRODUCTION TARGET -->
+    <section class="stage-card locked" id="stage-4">
+      <div class="stage-marker">4</div>
+      <div class="stage-body">
+        <p class="stage-eyebrow">Output</p>
+        <h2>Daily Production Target</h2>
+        <p class="stage-sub">What the fleet above is actually capable of, per day.</p>
+        <table class="data-table">
+          <thead><tr><th>Activity</th><th>Quantity</th><th>Unit</th></tr></thead>
+          <tbody id="targetBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STAGE 5 — TARGET ACHIEVEMENT -->
+    <section class="stage-card locked" id="stage-5">
+      <div class="stage-marker">5</div>
+      <div class="stage-body">
+        <p class="stage-eyebrow">Result</p>
+        <h2>Target Achievement</h2>
+        <p class="stage-sub">Fleet capacity vs. the required daily target.</p>
+        <div class="result-grid">
+          <div class="result-box" id="coalBox">
+            <span class="result-label">Coal Target Achieved</span>
+            <span class="result-value" id="coalValue">—</span>
+            <span class="result-unit">T/Day</span>
+          </div>
+          <div class="result-box" id="obBox">
+            <span class="result-label">OB Target Achieved</span>
+            <span class="result-value" id="obValue">—</span>
+            <span class="result-unit">CuM./Day</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="app-foot">Synced live with the Production Schedule Google Sheet</footer>
+<div id="toastHost"></div>
+
+<script>
+/* ============================================================
+   CONFIG — paste your deployed Apps Script Web App URL here
+   ============================================================ */
+const API_URL = "https://script.google.com/macros/s/AKfycbyjhTmZlZCaFWQoK-MWl4WZfbJqbk3e0nsi6tTxhn7w2jcJk_YIlWxtz6I6BCL7Egu0SA/exec";
+
+/* ============================================================
+   FIELD DEFINITIONS
+   ============================================================ */
+const BASE_FIELDS = [
+  { ref: 'C5',  labelRef: 'B5',  unitRef: 'D5',  id: 'f_C5',  fallbackLabel: 'Coal Production',   fallbackUnit: 'MT/Year',   step: '0.01' },
+  { ref: 'C6',  labelRef: 'B6',  unitRef: 'D6',  id: 'f_C6',  fallbackLabel: 'Working Days',       fallbackUnit: 'Days/Year', step: '1' },
+  { ref: 'C7',  labelRef: 'B7',  unitRef: 'D7',  id: 'f_C7',  fallbackLabel: 'Shifts',              fallbackUnit: 'No./Day',   step: '1' },
+  { ref: 'C8',  labelRef: 'B8',  unitRef: 'D8',  id: 'f_C8',  fallbackLabel: 'Stripping Ratio',    fallbackUnit: 'CuM./T',    step: '0.01' },
+  { ref: 'C10', labelRef: 'B10', unitRef: 'D10', id: 'f_C10', fallbackLabel: 'Specific Gravity',   fallbackUnit: 'T/CuM.',    step: '0.01' },
+  { ref: 'C14', labelRef: 'B14', unitRef: 'D14', id: 'f_C14', fallbackLabel: 'Avg. Lead Coal',     fallbackUnit: 'Km',        text: true }
+];
+
+const EQUIPMENT_ROWS = [
+  { nameRef: 'B31', capRef: 'C31', qtyRef: 'D31', outRef: 'E31' },
+  { nameRef: 'B28', capRef: 'C28', qtyRef: 'D28', outRef: 'E28' },
+  { nameRef: 'B29', capRef: 'C29', qtyRef: 'D29', outRef: 'E29' },
+  { nameRef: 'B30', capRef: 'C30', qtyRef: 'D30', outRef: 'E30' }
+];
+
+let latest = {};
+let pollTimer = null;
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function fmt(n, decimals) {
+  if (typeof n !== 'number' || isNaN(n)) return '—';
+  const d = decimals === undefined ? 2 : decimals;
+  return n.toLocaleString('en-IN', { maximumFractionDigits: d, minimumFractionDigits: 0 });
+}
+function round2(n) { return Math.round(n * 100) / 100; }
+
+function showToast(message, type) {
+  const host = document.getElementById('toastHost');
+  const el = document.createElement('div');
+  el.className = 'toast ' + (type || 'success');
+  el.innerHTML = '<span class="toast-dot"></span><span>' + message + '</span>';
+  host.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('out');
+    setTimeout(() => el.remove(), 320);
+  }, 3200);
+}
+
+function setBtnLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.querySelector('.spinner').hidden = !loading;
+  btn.querySelector('.btn-label').style.opacity = loading ? .55 : 1;
+}
+
+function revealStage(n) {
+  const card = document.getElementById('stage-' + n);
+  card.classList.remove('locked');
+  requestAnimationFrame(() => card.classList.add('in'));
+  const total = 5;
+  document.getElementById('spineFill').style.height = ((n - 1) / (total - 1)) * 100 + '%';
+}
+
+function isUserEditingBase() {
+  const active = document.activeElement;
+  if (!active || active.tagName !== 'INPUT') return false;
+  return active.closest('#stage-1') !== null;
+}
+function isUserEditingEquipment() {
+  const active = document.activeElement;
+  if (!active || active.tagName !== 'INPUT') return false;
+  return active.closest('#stage-3') !== null;
+}
+
+/* ============================================================
+   RENDERERS
+   ============================================================ */
+function renderBaseFields(data) {
+  const wrap = document.getElementById('baseFields');
+  if (!wrap.dataset.built) {
+    wrap.innerHTML = BASE_FIELDS.map(f => `
+      <div class="field">
+        <label>${data[f.labelRef] || f.fallbackLabel}<span class="unit-tag">${data[f.unitRef] || f.fallbackUnit}</span></label>
+        <input id="${f.id}" type="${f.text ? 'text' : 'number'}" step="${f.step || 'any'}" placeholder="—" />
+      </div>
+    `).join('');
+    wrap.dataset.built = '1';
+  }
+  BASE_FIELDS.forEach(f => {
+    const input = document.getElementById(f.id);
+    if (document.activeElement === input) return; // don't clobber active typing
+    const val = data[f.ref];
+    input.value = (val === undefined || val === null || val === '') ? '' : val;
+  });
+}
+
+function renderDerived(data) {
+  const wrap = document.getElementById('derivedFields');
+  const dailyCoal = (data.C5 && data.C6) ? (Number(data.C5) * 1000000) / Number(data.C6) : null;
+  const monthlyCoal = dailyCoal !== null ? dailyCoal * 28 : null;
+  const dailyOB = (data.C9 !== undefined && data.C6) ? (Number(data.C9) / Number(data.C6)) * 1000000 : null;
+  const monthlyOB = dailyOB !== null ? dailyOB * 28 : null;
+
+  const cards = [
+    { label: data.B9 || 'OB Quantity', value: data.C9, unit: data.D9 || 'M CuM./Year', digits: 2 },
+    { label: 'Daily Coal Production', value: dailyCoal, unit: 'T/Day', digits: 0 },
+    { label: 'Monthly Coal Production', value: monthlyCoal, unit: 'T', digits: 0 },
+    { label: 'Daily OB Removal', value: dailyOB, unit: 'CuM./Day', digits: 0 },
+    { label: 'Monthly OB Removal', value: monthlyOB, unit: 'CuM.', digits: 0 }
+  ];
+
+  const already = wrap.dataset.built;
+  wrap.innerHTML = cards.map((c, i) => `
+    <div class="metric-card ${already ? 'flash' : ''}" id="mcard-${i}">
+      <div class="m-label">${c.label}</div>
+      <div class="m-value"><span>${fmt(c.value, c.digits)}</span><span class="m-unit">${c.unit}</span></div>
+    </div>
+  `).join('');
+  wrap.dataset.built = '1';
+}
+
+function renderEquipmentTable(data) {
+  const body = document.getElementById('equipmentBody');
+  if (!body.dataset.built) {
+    body.innerHTML = EQUIPMENT_ROWS.map((r, i) => `
+      <tr>
+        <td>${data[r.nameRef] || ''}</td>
+        <td><span class="cap-tag">${data[r.capRef] || ''}</span></td>
+        <td><input type="number" step="1" min="0" id="eq_${r.qtyRef}" /></td>
+        <td><span class="out-cell" id="out_${r.outRef}">—</span></td>
+      </tr>
+    `).join('');
+    body.dataset.built = '1';
+  }
+  EQUIPMENT_ROWS.forEach(r => {
+    const input = document.getElementById('eq_' + r.qtyRef);
+    if (document.activeElement !== input) {
+      const val = data[r.qtyRef];
+      input.value = (val === undefined || val === null) ? '' : val;
+    }
+    const outEl = document.getElementById('out_' + r.outRef);
+    const newVal = fmt(data[r.outRef], 0);
+    if (outEl.textContent !== newVal && outEl.textContent !== '—') {
+      outEl.classList.add('flash');
+      setTimeout(() => outEl.classList.remove('flash'), 900);
+    }
+    outEl.textContent = newVal;
+  });
+}
+
+function renderTargetTable(data) {
+  const body = document.getElementById('targetBody');
+  body.innerHTML = `
+    <tr><td>${data.B20 || 'Coal Production'}</td><td class="out-cell">${fmt(data.C20, 0)}</td><td>${data.D20 || 'T/Day'}</td></tr>
+    <tr><td>${data.B21 || 'OB Removal'}</td><td class="out-cell">${fmt(data.C21, 0)}</td><td>${data.D21 || 'CuM./Day'}</td></tr>
+  `;
+}
+
+function setResultBox(boxId, valId, diff, unitLabel) {
+  const box = document.getElementById(boxId);
+  const val = document.getElementById(valId);
+  box.classList.remove('positive', 'negative', 'neutral');
+  if (diff > 0) {
+    box.classList.add('positive');
+    val.textContent = '+' + fmt(diff, 0);
+  } else if (diff < 0) {
+    box.classList.add('negative');
+    val.textContent = fmt(diff, 0);
+  } else {
+    box.classList.add('neutral');
+    val.textContent = 'Target Achieved';
+  }
+  box.classList.remove('pulse');
+  void box.offsetWidth;
+  box.classList.add('pulse');
+}
+
+function renderResults(data) {
+  if (data.C20 === undefined || data.C11 === undefined) return;
+  const coalDiff = round2(Number(data.C20) - Number(data.C11));
+  const obDiff = round2(Number(data.C21) - Number(data.C12));
+  setResultBox('coalBox', 'coalValue', coalDiff);
+  setResultBox('obBox', 'obValue', obDiff);
+}
+
+function allBaseFieldsPresent(data) {
+  return BASE_FIELDS.every(f => data[f.ref] !== undefined && data[f.ref] !== null && data[f.ref] !== '');
+}
+
+/* ============================================================
+   MASTER APPLY
+   ============================================================ */
+function applyData(data) {
+  latest = data;
+  renderBaseFields(data);
+  if (allBaseFieldsPresent(data)) {
+    revealStage(2);
+    renderDerived(data);
+    revealStage(3);
+    renderEquipmentTable(data);
+    revealStage(4);
+    renderTargetTable(data);
+    revealStage(5);
+    renderResults(data);
+  }
+}
+
+/* ============================================================
+   API
+   ============================================================ */
+async function apiGet() {
+  const res = await fetch(API_URL, { method: 'GET' });
+  if (!res.ok) throw new Error('network');
+  return res.json();
+}
+async function apiPost(updates) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight on Apps Script
+    body: JSON.stringify({ updates })
+  });
+  if (!res.ok) throw new Error('network');
+  return res.json();
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+document.getElementById('submitBase').addEventListener('click', async () => {
+  const updates = {};
+  let valid = true;
+  BASE_FIELDS.forEach(f => {
+    const el = document.getElementById(f.id);
+    let v = el.value.trim();
+    if (f.text) {
+      updates[f.ref] = v;
+    } else {
+      const n = parseFloat(v);
+      if (v === '' || isNaN(n)) { valid = false; el.style.borderColor = 'var(--red)'; }
+      else { el.parentElement.style.borderColor = ''; updates[f.ref] = n; }
+    }
+  });
+  if (!valid) { showToast('Fill in every field with a valid number.', 'error'); return; }
+
+  setBtnLoading('submitBase', true);
+  document.getElementById('syncDot').className = 'sync-dot syncing';
+  try {
+    const data = await apiPost(updates);
+    if (data.error) throw new Error(data.error);
+    applyData(data);
+    showToast('Saved — derived metrics recalculated.', 'success');
+    document.getElementById('syncDot').className = 'sync-dot';
+  } catch (e) {
+    showToast('Could not save. Check the API_URL / your connection.', 'error');
+    document.getElementById('syncDot').className = 'sync-dot offline';
+  }
+  setBtnLoading('submitBase', false);
+});
+
+document.getElementById('submitEquipment').addEventListener('click', async () => {
+  const updates = {};
+  let valid = true;
+  EQUIPMENT_ROWS.forEach(r => {
+    const el = document.getElementById('eq_' + r.qtyRef);
+    const n = parseFloat(el.value);
+    if (el.value.trim() === '' || isNaN(n) || n < 0) { valid = false; el.style.borderColor = 'var(--red)'; }
+    else { el.style.borderColor = ''; updates[r.qtyRef] = n; }
+  });
+  if (!valid) { showToast('Fleet quantities must be zero or a positive number.', 'error'); return; }
+
+  setBtnLoading('submitEquipment', true);
+  document.getElementById('syncDot').className = 'sync-dot syncing';
+  try {
+    const data = await apiPost(updates);
+    if (data.error) throw new Error(data.error);
+    applyData(data);
+    showToast('Fleet updated — targets recalculated.', 'success');
+    document.getElementById('syncDot').className = 'sync-dot';
+  } catch (e) {
+    showToast('Could not save. Check the API_URL / your connection.', 'error');
+    document.getElementById('syncDot').className = 'sync-dot offline';
+  }
+  setBtnLoading('submitEquipment', false);
+});
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const root = document.documentElement;
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('ps_theme', next);
+});
+(function initTheme() {
+  const saved = localStorage.getItem('ps_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+/* ============================================================
+   POLLING — keeps the frontend live without a page refresh
+   ============================================================ */
+function startPolling() {
+  pollTimer = setInterval(async () => {
+    if (isUserEditingBase() || isUserEditingEquipment()) return; // don't clobber active typing
+    try {
+      const data = await apiGet();
+      if (data.error) return;
+      if (JSON.stringify(data) !== JSON.stringify(latest)) {
+        applyData(data);
+      }
+      document.getElementById('syncDot').className = 'sync-dot';
+    } catch (e) {
+      document.getElementById('syncDot').className = 'sync-dot offline';
+    }
+  }, 6000);
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+async function boot() {
+  revealStage(1);
+  try {
+    const data = await apiGet();
+    if (data.error) throw new Error(data.error);
+    applyData(data);
+  } catch (e) {
+    showToast('Could not reach the backend — set API_URL in index.html.', 'error');
+    renderBaseFields({});
+  } finally {
+    document.getElementById('bootOverlay').classList.add('hide');
+    startPolling();
+  }
+}
+boot();
+</script>
+</body>
+</html>
