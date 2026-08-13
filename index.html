@@ -161,6 +161,13 @@
     padding-bottom: 14px; /* room for the scrollbar */
   }
 
+  .card-col {
+    display: flex; flex-direction: column;
+    gap: clamp(16px, 3vw, 26px);
+    flex: 0 0 360px; width: 360px;
+  }
+  .card-col .stage-card { flex: 0 0 auto; width: 100%; }
+
   .stage-card {
     position: relative;
     background: var(--surface);
@@ -172,7 +179,21 @@
     transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1), border-color .3s;
     flex: 0 0 360px; width: 360px;
   }
-  #stage-3 { flex-basis: 640px; width: 640px; }
+  #stage-3 { flex-basis: 1026px; width: 1026px; }
+  /* Input-driven sections share one light gradient */
+  #stage-1, #stage-3 {
+    background: linear-gradient(160deg,
+      color-mix(in srgb, var(--amber) 12%, var(--surface)) 0%,
+      var(--surface) 55%,
+      color-mix(in srgb, var(--amber-2) 10%, var(--surface)) 100%);
+  }
+  /* Computed/output sections share a different light gradient */
+  #stage-2, #stage-4 {
+    background: linear-gradient(160deg,
+      color-mix(in srgb, var(--teal) 12%, var(--surface)) 0%,
+      var(--surface) 55%,
+      color-mix(in srgb, var(--teal-2) 10%, var(--surface)) 100%);
+  }
   .stage-card.in { opacity: 1; transform: translateY(0); }
   .stage-card.locked { pointer-events: none; }
   .stage-card.active-glow { border-color: color-mix(in srgb, var(--amber) 45%, var(--line)); }
@@ -468,25 +489,27 @@
 <main class="stage-wrap">
   <div class="cards">
 
-    <!-- STAGE 1 — BASE PARAMETERS -->
-    <section class="stage-card" id="stage-1">
-      <div class="stage-body">
-        <p class="stage-eyebrow">Input</p>
-        <h2>Base Parameters</h2>
-        <p class="stage-sub">The core assumptions behind the whole simulation.</p>
-        <div class="field-grid" id="baseFields"></div>
-      </div>
-    </section>
+    <div class="card-col">
+      <!-- STAGE 1 — BASE PARAMETERS -->
+      <section class="stage-card" id="stage-1">
+        <div class="stage-body">
+          <p class="stage-eyebrow">Input</p>
+          <h2>Base Parameters</h2>
+          <p class="stage-sub">The core assumptions behind the whole simulation.</p>
+          <div class="field-grid" id="baseFields"></div>
+        </div>
+      </section>
 
-    <!-- STAGE 2 — DERIVED METRICS -->
-    <section class="stage-card locked" id="stage-2">
-      <div class="stage-body">
-        <p class="stage-eyebrow">Auto-calculated</p>
-        <h2>Derived Metrics</h2>
-        <p class="stage-sub">Recomputed instantly from your base parameters.</p>
-        <div class="metric-grid" id="derivedFields"></div>
-      </div>
-    </section>
+      <!-- STAGE 2 — DERIVED METRICS -->
+      <section class="stage-card locked" id="stage-2">
+        <div class="stage-body">
+          <p class="stage-eyebrow">Auto-calculated</p>
+          <h2>Derived Metrics</h2>
+          <p class="stage-sub">Recomputed instantly from your base parameters.</p>
+          <div class="metric-grid" id="derivedFields"></div>
+        </div>
+      </section>
+    </div>
 
     <!-- STAGE 3 — EQUIPMENT REQUIREMENT (+ nested Daily Production Target) -->
     <section class="stage-card locked" id="stage-3">
