@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Production Schedule · WBMDTCL Gourandih A&amp;C</title>
+<title>Production Schedule</title>
 <link rel="icon" type="image/png" href="https://wingzinfotech.in/img/ampl.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -147,30 +147,19 @@
   [data-theme="dark"] .icon-btn .moon { display: block; }
 
   /* ==========================================================
-     LAYOUT / SPINE
+     LAYOUT
      ========================================================== */
   main.stage-wrap {
-    max-width: 980px; margin: 0 auto;
+    max-width: 1900px; margin: 0 auto;
     padding: clamp(24px, 5vw, 56px) clamp(16px, 4vw, 40px) 80px;
-    display: flex; gap: clamp(14px, 3vw, 28px);
-  }
-  .spine {
-    flex-shrink: 0; width: 26px;
-    display: flex; flex-direction: column; align-items: center;
-    padding-top: 34px;
-  }
-  .spine-track {
-    position: relative; width: 3px; flex: 1;
-    background: var(--line); border-radius: 3px; overflow: hidden;
-  }
-  .spine-fill {
-    position: absolute; top: 0; left: 0; width: 100%; height: 0%;
-    background: linear-gradient(180deg, var(--amber), var(--teal));
-    border-radius: 3px;
-    transition: height .7s cubic-bezier(.65,0,.35,1);
   }
 
-  .cards { flex: 1; display: flex; flex-direction: column; gap: clamp(16px, 3vw, 26px); min-width: 0; }
+  .cards {
+    display: flex; flex-direction: row; align-items: flex-start;
+    gap: clamp(16px, 3vw, 26px);
+    overflow-x: auto; overflow-y: visible;
+    padding-bottom: 14px; /* room for the scrollbar */
+  }
 
   .stage-card {
     position: relative;
@@ -181,29 +170,14 @@
     box-shadow: 0 10px 30px var(--shadow);
     opacity: 0; transform: translateY(18px);
     transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1), border-color .3s;
+    flex: 0 0 360px; width: 360px;
   }
+  #stage-3 { flex-basis: 640px; width: 640px; }
   .stage-card.in { opacity: 1; transform: translateY(0); }
   .stage-card.locked { pointer-events: none; }
   .stage-card.active-glow { border-color: color-mix(in srgb, var(--amber) 45%, var(--line)); }
 
-  .stage-marker {
-    position: absolute; left: -49px; top: 26px;
-    width: 26px; height: 26px; border-radius: 50%;
-    background: var(--surface); border: 2px solid var(--line);
-    color: var(--ink-faint);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700;
-    transition: all .4s ease;
-  }
-  .stage-card.in .stage-marker {
-    border-color: var(--teal);
-    background: linear-gradient(135deg, var(--amber), var(--teal));
-    color: #fff;
-  }
-  @media (max-width: 720px) {
-    .spine { display: none; }
-    .stage-marker { display: none; }
-  }
+  
 
   .stage-body h2 {
     font-family: 'Space Grotesk', sans-serif; margin: 0 0 4px;
@@ -222,7 +196,7 @@
      FORM FIELDS
      ========================================================== */
   .field-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 14px; margin-bottom: 20px;
   }
   .field {
@@ -277,7 +251,7 @@
      METRIC GRID (Stage 2 — derived)
      ========================================================== */
   .metric-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 14px;
   }
   .metric-card {
@@ -310,18 +284,20 @@
   /* ==========================================================
      TABLES
      ========================================================== */
+  .table-scroll { width: 100%; overflow-x: visible; margin: 0 0 18px; border-radius: 14px; }
+  .table-scroll .data-table { margin-bottom: 0; }
   .data-table {
     width: 100%; border-collapse: separate; border-spacing: 0;
     border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
     margin-bottom: 18px;
   }
   .data-table th {
-    text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em;
-    font-weight: 700; color: #fff5e8; padding: 12px 14px;
+    text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em;
+    font-weight: 700; color: #fff5e8; padding: 12px 12px;
     background: linear-gradient(120deg, var(--amber), var(--teal));
   }
   .data-table td {
-    padding: 11px 14px; font-size: 14px; border-top: 1px solid var(--line);
+    padding: 10px 12px; font-size: 13.5px; border-top: 1px solid var(--line);
     background: var(--surface-2);
   }
   .data-table tr:hover td { background: var(--surface); }
@@ -329,9 +305,9 @@
     font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink-soft);
   }
   .data-table input[type="number"] {
-    width: 84px; padding: 7px 9px; border-radius: 8px;
+    width: 66px; padding: 7px 8px; border-radius: 8px;
     border: 1px solid var(--line); background: var(--surface);
-    font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600;
+    font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; font-weight: 600;
     color: var(--ink); outline: none; transition: border-color .2s ease;
   }
   .data-table input[type="number"]:focus { border-color: var(--amber); }
@@ -340,8 +316,25 @@
     transition: background .3s ease;
   }
   .data-table .out-cell.flash { background: color-mix(in srgb, var(--amber-2) 40%, transparent); }
+  .table-scroll .data-table th:nth-child(6),
+  .table-scroll .data-table td:nth-child(6) {
+    width: 64px; padding-left: 8px; padding-right: 8px;
+  }
   .table-note {
     font-size: 12px; color: var(--ink-faint); margin: -8px 0 18px; font-style: italic;
+  }
+
+  /* Nested card — Daily Production Target, sits inside the Equipment stage */
+  .nested-card {
+    margin-top: 2px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px 4px;
+  }
+  .nested-card h3 {
+    font-family: 'Space Grotesk', sans-serif; margin: 0 0 12px;
+    font-size: 15px; font-weight: 700;
   }
 
   /* ==========================================================
@@ -473,30 +466,20 @@
 </header>
 
 <main class="stage-wrap">
-  <div class="spine" aria-hidden="true">
-    <div class="spine-track"><div class="spine-fill" id="spineFill"></div></div>
-  </div>
-
   <div class="cards">
 
     <!-- STAGE 1 — BASE PARAMETERS -->
     <section class="stage-card" id="stage-1">
-      <div class="stage-marker">1</div>
       <div class="stage-body">
         <p class="stage-eyebrow">Input</p>
         <h2>Base Parameters</h2>
         <p class="stage-sub">The core assumptions behind the whole simulation.</p>
         <div class="field-grid" id="baseFields"></div>
-        <button class="btn btn-primary" id="submitBase">
-          <span class="btn-label">Calculate &amp; Save</span>
-          <span class="spinner" hidden></span>
-        </button>
       </div>
     </section>
 
     <!-- STAGE 2 — DERIVED METRICS -->
     <section class="stage-card locked" id="stage-2">
-      <div class="stage-marker">2</div>
       <div class="stage-body">
         <p class="stage-eyebrow">Auto-calculated</p>
         <h2>Derived Metrics</h2>
@@ -505,45 +488,41 @@
       </div>
     </section>
 
-    <!-- STAGE 3 — EQUIPMENT REQUIREMENT -->
+    <!-- STAGE 3 — EQUIPMENT REQUIREMENT (+ nested Daily Production Target) -->
     <section class="stage-card locked" id="stage-3">
-      <div class="stage-marker">3</div>
       <div class="stage-body">
         <p class="stage-eyebrow">Fleet Planning</p>
         <h2>Equipment Requirement</h2>
-        <p class="stage-sub">Set how many of each machine are deployed.</p>
-        <table class="data-table">
-          <thead><tr><th>Equipment</th><th>Capacity</th><th>Unit</th><th>Quantity</th></tr></thead>
-          <tbody id="equipmentBody"></tbody>
-        </table>
-        <button class="btn btn-primary" id="submitEquipment">
-          <span class="btn-label">Update Fleet &amp; Recalculate</span>
-          <span class="spinner" hidden></span>
-        </button>
+        <p class="stage-sub">Set Unit, Productivity and Working Hours — totals update as you type, no button needed.</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Equipment</th><th>Capacity</th><th>Unit</th>
+                <th>Productivity</th><th>Working Hours</th><th>Total Quantity</th>
+              </tr>
+            </thead>
+            <tbody id="equipmentBody"></tbody>
+          </table>
+        </div>
+
+        <div class="nested-card">
+          <p class="stage-eyebrow">Auto-calculated</p>
+          <h3>Daily Production Target</h3>
+          <table class="data-table compact">
+            <thead><tr><th>Activity</th><th>Quantity</th><th>Unit</th></tr></thead>
+            <tbody id="targetBody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <!-- STAGE 4 — DAILY PRODUCTION TARGET -->
+    <!-- STAGE 4 — TARGET ACHIEVEMENT -->
     <section class="stage-card locked" id="stage-4">
-      <div class="stage-marker">4</div>
-      <div class="stage-body">
-        <p class="stage-eyebrow">Output</p>
-        <h2>Daily Production Target</h2>
-        <p class="stage-sub">What the fleet above is actually capable of, per day.</p>
-        <table class="data-table">
-          <thead><tr><th>Activity</th><th>Quantity</th><th>Unit</th></tr></thead>
-          <tbody id="targetBody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- STAGE 5 — TARGET ACHIEVEMENT -->
-    <section class="stage-card locked" id="stage-5">
-      <div class="stage-marker">5</div>
       <div class="stage-body">
         <p class="stage-eyebrow">Result</p>
         <h2>Target Achievement</h2>
-        <p class="stage-sub">Fleet capacity vs. the required daily target.</p>
+        <p class="stage-sub">Fleet capacity vs. the required daily target — live.</p>
         <div class="result-grid">
           <div class="result-box" id="coalBox">
             <span class="result-label">Coal Target Achieved</span>
@@ -583,15 +562,22 @@ const BASE_FIELDS = [
   { ref: 'C14', labelRef: 'B14', unitRef: 'D14', id: 'f_C14', fallbackLabel: 'Avg. Lead Coal',     fallbackUnit: 'Km',        text: true }
 ];
 
+// Equipment Requirement rows, in sheet order. `formula` picks how
+// Total Production Quantity (G) is derived from that row's inputs:
+//   'def'    -> Unit(D) * Productivity(E) * Working Hours(F)
+//   'defc10' -> Unit(D) * Productivity(E) * Working Hours(F) * Specific Gravity(C10)
+//   'cde'    -> Capacity(C) * Unit(D) * Productivity(E)
 const EQUIPMENT_ROWS = [
-  { nameRef: 'B31', capRef: 'C31', qtyRef: 'D31', outRef: 'E31' },
-  { nameRef: 'B28', capRef: 'C28', qtyRef: 'D28', outRef: 'E28' },
-  { nameRef: 'B29', capRef: 'C29', qtyRef: 'D29', outRef: 'E29' },
-  { nameRef: 'B30', capRef: 'C30', qtyRef: 'D30', outRef: 'E30' }
+  { row: 28, formula: 'def' },
+  { row: 29, formula: 'def' },
+  { row: 30, formula: 'def' },
+  { row: 31, formula: 'defc10' },
+  { row: 32, formula: 'cde' }
 ];
 
 let latest = {};
 let pollTimer = null;
+let autosaveTimer = null;
 
 /* ============================================================
    HELPERS
@@ -626,8 +612,6 @@ function revealStage(n) {
   const card = document.getElementById('stage-' + n);
   card.classList.remove('locked');
   requestAnimationFrame(() => card.classList.add('in'));
-  const total = 5;
-  document.getElementById('spineFill').style.height = ((n - 1) / (total - 1)) * 100 + '%';
 }
 
 function isUserEditingBase() {
@@ -654,6 +638,9 @@ function renderBaseFields(data) {
       </div>
     `).join('');
     wrap.dataset.built = '1';
+    BASE_FIELDS.forEach(f => {
+      document.getElementById(f.id).addEventListener('input', onAnyInput);
+    });
   }
   BASE_FIELDS.forEach(f => {
     const input = document.getElementById(f.id);
@@ -663,19 +650,29 @@ function renderBaseFields(data) {
   });
 }
 
-function renderDerived(data) {
-  const wrap = document.getElementById('derivedFields');
-  const dailyCoal = (data.C5 && data.C6) ? (Number(data.C5) * 1000000) / Number(data.C6) : null;
-  const monthlyCoal = dailyCoal !== null ? dailyCoal * 28 : null;
-  const dailyOB = (data.C9 !== undefined && data.C6) ? (Number(data.C9) / Number(data.C6)) * 1000000 : null;
-  const monthlyOB = dailyOB !== null ? dailyOB * 28 : null;
+/** Reads the six base-parameter inputs straight from the DOM (not from `latest`). */
+function readBaseInputs() {
+  const out = {};
+  BASE_FIELDS.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (f.text) { out[f.ref] = el ? el.value : ''; return; }
+    const n = el ? parseFloat(el.value) : NaN;
+    out[f.ref] = isNaN(n) ? 0 : n;
+  });
+  return out;
+}
+function baseValuesUsable(b) {
+  return b.C5 > 0 && b.C6 > 0 && b.C7 > 0 && b.C8 > 0 && b.C10 > 0;
+}
 
+function renderDerived(vals) {
+  const wrap = document.getElementById('derivedFields');
   const cards = [
-    { label: data.B9 || 'OB Quantity', value: data.C9, unit: data.D9 || 'M CuM./Year', digits: 2 },
-    { label: 'Daily Coal Production', value: dailyCoal, unit: 'T/Day', digits: 0 },
-    { label: 'Monthly Coal Production', value: monthlyCoal, unit: 'T', digits: 0 },
-    { label: 'Daily OB Removal', value: dailyOB, unit: 'CuM./Day', digits: 0 },
-    { label: 'Monthly OB Removal', value: monthlyOB, unit: 'CuM.', digits: 0 }
+    { label: latest.B9 || 'OB Quantity', value: vals.C9, unit: latest.D9 || 'M CuM./Year', digits: 2 },
+    { label: 'Daily Coal Production', value: vals.dailyCoal, unit: 'T/Day', digits: 0 },
+    { label: 'Monthly Coal Production', value: vals.monthlyCoal, unit: 'T', digits: 0 },
+    { label: 'Daily OB Removal', value: vals.dailyOB, unit: 'CuM./Day', digits: 0 },
+    { label: 'Monthly OB Removal', value: vals.monthlyOB, unit: 'CuM.', digits: 0 }
   ];
 
   const already = wrap.dataset.built;
@@ -688,33 +685,117 @@ function renderDerived(data) {
   wrap.dataset.built = '1';
 }
 
+/** Total Production Quantity for one equipment row, from its current live inputs. */
+function computeRowTotal(rowCfg, d, e, f, c10, capNum) {
+  if (rowCfg.formula === 'def') return d * e * f;
+  if (rowCfg.formula === 'defc10') return d * e * f * c10;
+  if (rowCfg.formula === 'cde') return capNum * d * e;
+  return 0;
+}
+
 function renderEquipmentTable(data) {
   const body = document.getElementById('equipmentBody');
   if (!body.dataset.built) {
-    body.innerHTML = EQUIPMENT_ROWS.map((r, i) => `
+    body.innerHTML = EQUIPMENT_ROWS.map(r => `
       <tr>
-        <td>${data[r.nameRef] || ''}</td>
-        <td><span class="cap-tag">${data[r.capRef] || ''}</span></td>
-        <td><input type="number" step="1" min="0" id="eq_${r.qtyRef}" /></td>
-        <td><span class="out-cell" id="out_${r.outRef}">—</span></td>
+        <td>${data['B' + r.row] || ''}</td>
+        <td><span class="cap-tag">${data['C' + r.row] ?? ''}</span></td>
+        <td><input type="number" step="1" min="0" id="eq_D${r.row}" /></td>
+        <td><input type="number" step="any" min="0" id="eq_E${r.row}" /></td>
+        <td><input type="number" step="any" min="0" id="eq_F${r.row}" /></td>
+        <td><span class="out-cell" id="out_G${r.row}">—</span></td>
       </tr>
     `).join('');
     body.dataset.built = '1';
+    EQUIPMENT_ROWS.forEach(r => {
+      ['D', 'E', 'F'].forEach(col => {
+        document.getElementById('eq_' + col + r.row).addEventListener('input', onAnyInput);
+      });
+    });
   }
   EQUIPMENT_ROWS.forEach(r => {
-    const input = document.getElementById('eq_' + r.qtyRef);
-    if (document.activeElement !== input) {
-      const val = data[r.qtyRef];
+    ['D', 'E', 'F'].forEach(col => {
+      const input = document.getElementById('eq_' + col + r.row);
+      if (document.activeElement === input) return; // don't clobber active typing
+      const val = data[col + r.row];
       input.value = (val === undefined || val === null) ? '' : val;
-    }
-    const outEl = document.getElementById('out_' + r.outRef);
-    const newVal = fmt(data[r.outRef], 0);
-    if (outEl.textContent !== newVal && outEl.textContent !== '—') {
-      outEl.classList.add('flash');
-      setTimeout(() => outEl.classList.remove('flash'), 900);
-    }
-    outEl.textContent = newVal;
+    });
   });
+  recomputeAll(); // reflect whatever every input holds right now
+}
+/** Recomputes everything — derived metrics, equipment totals, Daily Production Target,
+    and Target Achievement — straight from whatever every input currently holds. */
+function recomputeAll() {
+  const b = readBaseInputs(); // {C5,C6,C7,C8,C10,C14} read live from the Base Parameters card
+  if (!baseValuesUsable(b)) return; // not enough entered yet — leave stages 2-4 locked
+
+  revealStage(2);
+  revealStage(3);
+  revealStage(4);
+
+  const C9 = b.C5 * b.C8;
+  const dailyCoal = (b.C5 * 1000000) / b.C6;
+  const monthlyCoal = dailyCoal * 28;
+  const dailyOB = (C9 / b.C6) * 1000000;
+  const monthlyOB = dailyOB * 28;
+  renderDerived({ C9, dailyCoal, monthlyCoal, dailyOB, monthlyOB });
+
+  const totals = {};
+  EQUIPMENT_ROWS.forEach(r => {
+    const d = parseFloat(document.getElementById('eq_D' + r.row).value) || 0;
+    const e = parseFloat(document.getElementById('eq_E' + r.row).value) || 0;
+    const f = parseFloat(document.getElementById('eq_F' + r.row).value) || 0;
+    const capNum = Number(latest['C' + r.row]) || 0;
+    const total = computeRowTotal(r, d, e, f, b.C10, capNum);
+    totals[r.row] = total;
+
+    const outEl = document.getElementById('out_G' + r.row);
+    const newText = fmt(total, 0);
+    if (outEl.textContent !== newText && outEl.textContent !== '—') {
+      outEl.classList.add('flash');
+      setTimeout(() => outEl.classList.remove('flash'), 700);
+    }
+    outEl.textContent = newText;
+  });
+
+  const coalQty = totals[31] || 0;
+  const obQty = (totals[28] || 0) + (totals[29] || 0) + (totals[30] || 0);
+  renderTargetTable({ B20: latest.B20, D20: latest.D20, B21: latest.B21, D21: latest.D21, C20: coalQty, C21: obQty });
+  renderResults({ C20: coalQty, C11: dailyCoal, C21: obQty, C12: dailyOB });
+}
+
+function onAnyInput() {
+  recomputeAll();
+  scheduleAutosave();
+}
+
+function scheduleAutosave() {
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(autosaveAll, 800);
+}
+
+/** Silently persists every Base Parameter + Equipment input to the backend sheet. */
+async function autosaveAll() {
+  const updates = {};
+  BASE_FIELDS.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (!el) return;
+    updates[f.ref] = f.text ? el.value : (parseFloat(el.value) || 0);
+  });
+  EQUIPMENT_ROWS.forEach(r => {
+    updates['D' + r.row] = parseFloat(document.getElementById('eq_D' + r.row).value) || 0;
+    updates['E' + r.row] = parseFloat(document.getElementById('eq_E' + r.row).value) || 0;
+    updates['F' + r.row] = parseFloat(document.getElementById('eq_F' + r.row).value) || 0;
+  });
+  document.getElementById('syncDot').className = 'sync-dot syncing';
+  try {
+    const data = await apiPost(updates);
+    if (data.error) throw new Error(data.error);
+    latest = data;
+    document.getElementById('syncDot').className = 'sync-dot';
+  } catch (e) {
+    document.getElementById('syncDot').className = 'sync-dot offline';
+  }
 }
 
 function renderTargetTable(data) {
@@ -725,7 +806,7 @@ function renderTargetTable(data) {
   `;
 }
 
-function setResultBox(boxId, valId, diff, unitLabel) {
+function setResultBox(boxId, valId, diff) {
   const box = document.getElementById(boxId);
   const val = document.getElementById(valId);
   box.classList.remove('positive', 'negative', 'neutral');
@@ -762,16 +843,7 @@ function allBaseFieldsPresent(data) {
 function applyData(data) {
   latest = data;
   renderBaseFields(data);
-  if (allBaseFieldsPresent(data)) {
-    revealStage(2);
-    renderDerived(data);
-    revealStage(3);
-    renderEquipmentTable(data);
-    revealStage(4);
-    renderTargetTable(data);
-    revealStage(5);
-    renderResults(data);
-  }
+  renderEquipmentTable(data); // builds/updates equipment inputs, then calls recomputeAll()
 }
 
 /* ============================================================
@@ -795,62 +867,6 @@ async function apiPost(updates) {
 /* ============================================================
    EVENTS
    ============================================================ */
-document.getElementById('submitBase').addEventListener('click', async () => {
-  const updates = {};
-  let valid = true;
-  BASE_FIELDS.forEach(f => {
-    const el = document.getElementById(f.id);
-    let v = el.value.trim();
-    if (f.text) {
-      updates[f.ref] = v;
-    } else {
-      const n = parseFloat(v);
-      if (v === '' || isNaN(n)) { valid = false; el.style.borderColor = 'var(--red)'; }
-      else { el.parentElement.style.borderColor = ''; updates[f.ref] = n; }
-    }
-  });
-  if (!valid) { showToast('Fill in every field with a valid number.', 'error'); return; }
-
-  setBtnLoading('submitBase', true);
-  document.getElementById('syncDot').className = 'sync-dot syncing';
-  try {
-    const data = await apiPost(updates);
-    if (data.error) throw new Error(data.error);
-    applyData(data);
-    showToast('Saved — derived metrics recalculated.', 'success');
-    document.getElementById('syncDot').className = 'sync-dot';
-  } catch (e) {
-    showToast('Could not save. Check the API_URL / your connection.', 'error');
-    document.getElementById('syncDot').className = 'sync-dot offline';
-  }
-  setBtnLoading('submitBase', false);
-});
-
-document.getElementById('submitEquipment').addEventListener('click', async () => {
-  const updates = {};
-  let valid = true;
-  EQUIPMENT_ROWS.forEach(r => {
-    const el = document.getElementById('eq_' + r.qtyRef);
-    const n = parseFloat(el.value);
-    if (el.value.trim() === '' || isNaN(n) || n < 0) { valid = false; el.style.borderColor = 'var(--red)'; }
-    else { el.style.borderColor = ''; updates[r.qtyRef] = n; }
-  });
-  if (!valid) { showToast('Fleet quantities must be zero or a positive number.', 'error'); return; }
-
-  setBtnLoading('submitEquipment', true);
-  document.getElementById('syncDot').className = 'sync-dot syncing';
-  try {
-    const data = await apiPost(updates);
-    if (data.error) throw new Error(data.error);
-    applyData(data);
-    showToast('Fleet updated — targets recalculated.', 'success');
-    document.getElementById('syncDot').className = 'sync-dot';
-  } catch (e) {
-    showToast('Could not save. Check the API_URL / your connection.', 'error');
-    document.getElementById('syncDot').className = 'sync-dot offline';
-  }
-  setBtnLoading('submitEquipment', false);
-});
 
 document.getElementById('themeToggle').addEventListener('click', () => {
   const root = document.documentElement;
